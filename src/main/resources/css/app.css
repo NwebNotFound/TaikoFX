@@ -1,0 +1,10 @@
+/* AI-assisted bootstrap, 2026-10-13. See docs/AI_USAGE.md. */
+.root { -fx-background-color: #111823; -fx-font-family: "Segoe UI"; -fx-font-size: 14px; }
+.label { -fx-text-fill: #e9edf5; }
+.title { -fx-font-size: 38px; -fx-font-weight: bold; }
+.subtitle { -fx-text-fill: #aab7cb; }
+.status { -fx-text-fill: #f5ce80; }
+.button { -fx-background-color: #ef766f; -fx-text-fill: #111823; -fx-font-weight: bold; -fx-background-radius: 8; -fx-padding: 12 32; -fx-cursor: hand; }
+.button:hover { -fx-background-color: #ff948d; }
+.button:focused { -fx-border-color: #f5ce80; -fx-border-width: 2; -fx-border-radius: 8; }
+.button.secondary { -fx-background-color: #2b3648; -fx-text-fill: #e9edf5; }

@@ -1,0 +1,47 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.1.0'
+}
+
+group = 'de.thu'
+version = '0.1.0'
+
+repositories { mavenCentral() }
+
+java {
+    toolchain { languageVersion = JavaLanguageVersion.of(25) }
+}
+
+javafx {
+    version = '25.0.4'
+    modules = ['javafx.controls', 'javafx.media']
+}
+
+dependencies {
+    implementation 'com.google.code.gson:gson:2.14.0'
+    testImplementation platform('org.junit:junit-bom:6.0.3')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+application {
+    mainClass = 'de.thu.taiko2d.Launcher'
+    applicationDefaultJvmArgs = ['--enable-native-access=ALL-UNNAMED']
+}
+
+tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
+tasks.named('test') { useJUnitPlatform() }
+tasks.named('run', JavaExec) {
+    jvmArgs '--enable-native-access=ALL-UNNAMED,javafx.graphics,javafx.media'
+}
+
+// Resolve test libraries even before there is a model worth testing.
+tasks.register('resolveDependencies') {
+    group = 'build setup'
+    description = 'Downloads and verifies the runtime and future test dependencies.'
+    doLast {
+        configurations.runtimeClasspath.files
+        configurations.testRuntimeClasspath.files
+    }
+}
