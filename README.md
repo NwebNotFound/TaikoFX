@@ -58,7 +58,7 @@ cd TaikoFX
 powershell -ExecutionPolicy Bypass -File .\dev.ps1 clean build
 ```
 
-Sign in to GitHub for the private repository and install JDK 25 on that PC.
+The repository is public, so cloning needs no GitHub sign-in. Install JDK 25 on that PC; sign in to GitHub when pushing your changes.
 Open the cloned folder in IntelliJ and set both SDK and Gradle JVM to 25.
 Before switching machines, commit and push your work. On the other machine,
 `git pull --ff-only` before editing. Build caches and personal IDE settings are ignored.

@@ -68,3 +68,10 @@ been tested. `installDist` still requires Java 25 on the destination machine.
 Before the next stage, review the separate Moodle AI policy and assignment dates.
 Next implement the audio/timing spike in PROJECT_SPEC section 7, then a plain-Java
 note model and deterministic judgement tests.
+
+## GitHub synchronization
+
+The user chose public visibility. GitHub CLI authentication was verified as
+NwebNotFound. The starter was pushed to https://github.com/NwebNotFound/TaikoFX
+and main tracks origin/main. The remote main commit was verified against local
+HEAD after the push. The public README includes cloning and two-PC instructions.
