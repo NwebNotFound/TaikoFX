@@ -36,6 +36,13 @@ tasks.named('run', JavaExec) {
     jvmArgs '--enable-native-access=ALL-UNNAMED,javafx.graphics,javafx.media'
 }
 
+// This Windows machine rendered a blank window from the distribution's default
+// hardware pipeline. Software rendering was visibly verified for the starter.
+// Keep development run unchanged; reassess GPU rendering when packaging the game.
+tasks.named('startScripts') {
+    defaultJvmOpts = application.applicationDefaultJvmArgs + ['-Dprism.order=sw']
+}
+
 // Resolve test libraries even before there is a model worth testing.
 tasks.register('resolveDependencies') {
     group = 'build setup'

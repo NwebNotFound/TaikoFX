@@ -8,6 +8,10 @@ dev.ps1, Launcher.java, TaikoApplication.java, render/GameCanvas.java, css/app.c
 and docs/{SOURCES,CONTRIBUTIONS,AI_USAGE,TEST_REPORT}. Gradle generated its official
 wrapper scripts/JAR/properties; PROJECT_SPEC.md is a copy of the user-supplied guide.
 
+Also generated .gitattributes for portable wrapper line endings. The distribution
+launcher selects software rendering after the hardware launch rendered blank;
+development run remains on its working default pipeline.
+
 Scope: minimal static JavaFX window. No music, scoring, note model, game engine,
 editor or archive importer has been implemented. Source comments identify the
 bootstrap as AI-assisted. Actual verification is recorded in TEST_REPORT.md.

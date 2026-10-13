@@ -42,6 +42,10 @@ in `JAVA_HOME`. The distribution needs an installed JDK/runtime; it is not a
 self-contained Windows executable. The first build needs internet; a verified
 cached build can run offline.
 
+The distribution uses JavaFX software rendering because its hardware launch
+rendered blank on the setup machine. Development `run` uses its working default
+pipeline. Recheck acceleration during the timing spike and final packaging.
+
 Pinned stack: Java 25, Gradle 9.1.0, JavaFX 25.0.4, OpenJFX plugin 0.1.0,
 Gson 2.14.0 and JUnit Jupiter 6.0.3. There are no tests yet because no pure-Java
 model has been created. See [test report](docs/TEST_REPORT.md).

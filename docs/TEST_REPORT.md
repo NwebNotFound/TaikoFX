@@ -44,8 +44,16 @@ resolution and a successful build are not unit-test coverage.
 - Development JavaFX window opened: title, CSS, Canvas lane, target and two static
   coloured example notes rendered correctly.
 - Play and Editor buttons update their respective placeholder status messages.
+- Exit closed the development window and Gradle `run` completed successfully.
 - A copied `installDist` launcher opened from `work\Launcher Path Test\TaikoFX`
   outside the source folder, with spaces in its path and a different working directory.
+- Its default hardware rendering produced a blank window, including when JavaFX
+  was explicitly loaded on the module path. Software rendering displayed the
+  complete window correctly. The generated distribution scripts therefore set
+  `-Dprism.order=sw`; development `run` keeps its verified default pipeline.
+- An initial sandbox launch could not write JavaFX's native cache lock. Verification
+  was repeated with access to the normal native cache; this was distinct from the
+  observed hardware rendering problem.
 - The classpath distribution emits JavaFX's 'Unsupported JavaFX configuration:
   classes were loaded from unnamed module' warning. The window still opens;
   there was no native-access failure. This follows the non-modular baseline.
