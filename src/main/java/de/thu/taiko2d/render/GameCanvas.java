@@ -7,6 +7,15 @@ import javafx.scene.text.Font;
 
 /** Static, resizable lane preview. AI-assisted bootstrap; see docs/AI_USAGE.md. */
 public final class GameCanvas extends Canvas {
+    // User-selected palettes, applied with AI assistance on 2026-10-20.
+    private static final Color LANE = Color.web("#393E46");
+    private static final Color MUTED = Color.web("#948979");
+    private static final Color TARGET = Color.web("#DFD0B8");
+    private static final Color CENTRE = Color.web("#F95454");
+    private static final Color CENTRE_BORDER = Color.web("#C62E2E");
+    private static final Color RIM = Color.web("#0D92F4");
+    private static final Color RIM_BORDER = Color.web("#77CDFF");
+
     public GameCanvas() {
         widthProperty().addListener(observable -> draw());
         heightProperty().addListener(observable -> draw());
@@ -20,22 +29,28 @@ public final class GameCanvas extends Canvas {
         graphics.clearRect(0, 0, width, height);
         double laneY = height / 2;
         double targetX = width * 0.18;
-        graphics.setFill(Color.web("#202938"));
+        graphics.setFill(LANE);
         graphics.fillRoundRect(0, laneY - 52, width, 104, 18, 18);
-        graphics.setStroke(Color.web("#38455a"));
+        graphics.setStroke(MUTED);
         graphics.setLineWidth(1);
         graphics.strokeLine(0, laneY, width, laneY);
-        graphics.setStroke(Color.web("#f5ce80"));
+        graphics.setStroke(TARGET);
         graphics.setLineWidth(3);
         graphics.strokeOval(targetX - 33, laneY - 33, 66, 66);
-        graphics.setFill(Color.web("#f5ce80"));
+        graphics.setFill(TARGET);
         graphics.setFont(Font.font("Segoe UI", 12));
         graphics.fillText("HIT", targetX - 11, laneY + 78);
-        graphics.setFill(Color.web("#ef766f"));
-        graphics.fillOval(width * 0.55 - 22, laneY - 22, 44, 44);
-        graphics.setFill(Color.web("#68b9da"));
-        graphics.fillOval(width * 0.75 - 22, laneY - 22, 44, 44);
-        graphics.setFill(Color.web("#b3bdce"));
+        drawNote(graphics, width * 0.55, laneY, CENTRE, CENTRE_BORDER);
+        drawNote(graphics, width * 0.75, laneY, RIM, RIM_BORDER);
+        graphics.setFill(TARGET);
         graphics.fillText("Static lane preview", 16, laneY - 72);
+    }
+
+    private void drawNote(GraphicsContext graphics, double x, double y, Color fill, Color border) {
+        graphics.setFill(fill);
+        graphics.fillOval(x - 22, y - 22, 44, 44);
+        graphics.setStroke(border);
+        graphics.setLineWidth(3);
+        graphics.strokeOval(x - 22, y - 22, 44, 44);
     }
 }
