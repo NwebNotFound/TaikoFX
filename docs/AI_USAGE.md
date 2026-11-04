@@ -37,3 +37,22 @@ controls remain visible. Offline build/installDist passed; no unit tests exist.
 ## 27 October 2026 - map example
 
 Codex created examples/heart-crush manifest, placeholder chart, license note and README as a reference for implementing the v1 loader. Note times and BPM are illustrative, not synchronized to the supplied song. Audio is not bundled. No game code was changed or playback verified.
+
+## 4 November 2026 - song select, hit animation, matrix scaffold
+
+Tool: Claude Code (Anthropic Claude Sonnet 5.5).
+
+- Song select screen: AI redesigned `showSongSelection()` in `TaikoApplication.java`
+  and the matching rules in `css/app.css` in an osu!lazer style (card carousel,
+  details panel, search box, bottom bar). A later CSS fix gave the cards room so
+  the selected card is no longer clipped when it slides out.
+- Hit animation: AI added `noteHit`/`drawHitFlights` in `render/GameCanvas.java`
+  (hit notes fly left in an arc, grow and fade) and a `lastHitNote()` getter in
+  `game/JudgementEngine.java`, plus the call in `TaikoApplication.java`. The
+  student plans to replace the hand-written flight math with their own matrices.
+- Matrix3x3: AI generated only the class skeleton (signatures, TODO comments) and
+  the first three tests in `Matrix3x3Test.java` (translate, rotate, pivot rotation)
+  and fixed their compile errors. AI reviewed the student's finished implementation
+  and tests for correctness and pointed out weaknesses in some of the new tests.
+- Verification: `dev.ps1 clean test build` passed. The new screens and animation
+  were not visually checked by AI.

@@ -13,9 +13,38 @@
 .button.secondary:hover { -fx-background-color: #948979; -fx-text-fill: #222831; }
 .button.secondary:focused { -fx-border-color: #DFD0B8; }
 
-/* AI-assisted mock song-list styling, 2026-10-20. */
-.song-list { -fx-background-color: #222831; -fx-control-inner-background: #222831; -fx-border-color: #948979; -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 4; }
-.song-list .list-cell { -fx-background-color: #393E46; -fx-text-fill: #DFD0B8; -fx-padding: 12 18; -fx-font-size: 16px; }
-.song-list .list-cell:filled:hover { -fx-background-color: #948979; -fx-text-fill: #222831; }
-.song-list .list-cell:filled:selected { -fx-background-color: #DFD0B8; -fx-text-fill: #222831; -fx-font-weight: bold; }
-.song-list .list-cell:empty { -fx-background-color: #222831; }
+/* osu!lazer-inspired song select. Pink accent is scoped to this screen. */
+.select-screen { -fx-background-color: linear-gradient(to bottom right, #1b1030, #2b1347 55%, #17162b); }
+.select-screen .label { -fx-text-fill: #f3e9ff; }
+.top-bar { -fx-padding: 18 28 10 28; -fx-background-color: rgba(0,0,0,0.28); }
+.search-box { -fx-background-color: rgba(255,255,255,0.10); -fx-text-fill: white; -fx-prompt-text-fill: rgba(255,255,255,0.45); -fx-background-radius: 6; -fx-padding: 9 14; -fx-font-size: 15px; -fx-highlight-fill: #ff66aa; }
+.search-box:focused { -fx-background-color: rgba(255,255,255,0.16); -fx-border-color: #ff66aa; -fx-border-radius: 6; }
+.select-screen .map-count { -fx-text-fill: rgba(255,255,255,0.55); }
+.select-centre { -fx-padding: 20 0 20 28; }
+.detail-card { -fx-background-color: rgba(0,0,0,0.38); -fx-background-radius: 14; -fx-padding: 22; -fx-border-color: rgba(255,255,255,0.10); -fx-border-radius: 14; }
+.select-screen .detail-title { -fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: white; }
+.select-screen .detail-artist { -fx-font-size: 17px; -fx-text-fill: #ffb3d6; }
+.select-screen .detail-mapper { -fx-text-fill: rgba(255,255,255,0.6); }
+.select-screen .detail-status { -fx-text-fill: rgba(255,255,255,0.5); -fx-font-size: 12px; }
+.diff-chip { -fx-background-color: #ff66aa; -fx-background-radius: 20; -fx-padding: 4 12; }
+.select-screen .diff-chip { -fx-text-fill: #1b1030; -fx-font-weight: bold; }
+.song-list { -fx-background-color: transparent; -fx-control-inner-background: transparent; -fx-background-insets: 0; -fx-padding: 0; }
+.song-list .list-cell, .song-list .list-cell:filled:hover, .song-list .list-cell:filled:selected, .song-list .list-cell:filled:selected:focused, .song-list .list-cell:empty { -fx-background-color: transparent; -fx-padding: 5 10 5 48; }
+.song-list .scroll-bar:vertical { -fx-background-color: transparent; -fx-pref-width: 8; }
+.song-list .scroll-bar .track { -fx-background-color: transparent; }
+.song-list .scroll-bar .thumb { -fx-background-color: rgba(255,102,170,0.55); -fx-background-radius: 4; }
+.song-list .scroll-bar .increment-button, .song-list .scroll-bar .decrement-button { -fx-pref-height: 0; -fx-padding: 0; }
+.song-card { -fx-background-color: rgba(255,255,255,0.08); -fx-background-radius: 10; -fx-padding: 12 20; -fx-border-color: rgba(255,255,255,0.12); -fx-border-radius: 10; -fx-cursor: hand; -fx-pref-height: 76; -fx-alignment: center-left; }
+.list-cell:hover .song-card { -fx-background-color: rgba(255,255,255,0.16); }
+.list-cell:selected .song-card { -fx-background-color: linear-gradient(to right, #ff66aa, #c2438a); -fx-border-color: white; -fx-effect: dropshadow(gaussian, rgba(255,102,170,0.75), 22, 0.25, 0, 0); }
+.select-screen .card-title { -fx-font-size: 17px; -fx-font-weight: bold; -fx-text-fill: white; }
+.select-screen .card-artist { -fx-text-fill: rgba(255,255,255,0.85); }
+.select-screen .card-meta { -fx-text-fill: rgba(255,255,255,0.55); -fx-font-size: 12px; }
+.list-cell:selected .card-meta { -fx-text-fill: rgba(255,255,255,0.85); }
+.bottom-bar { -fx-padding: 12 28; -fx-background-color: rgba(0,0,0,0.45); }
+.select-screen .help-text { -fx-text-fill: rgba(255,255,255,0.4); -fx-font-size: 12px; }
+.back-button { -fx-background-color: #3a2a55; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 6; -fx-padding: 10 28; -fx-cursor: hand; }
+.back-button:hover { -fx-background-color: #54397c; }
+.play-button { -fx-background-color: linear-gradient(to right, #ff66aa, #c2438a); -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16px; -fx-background-radius: 6; -fx-padding: 10 48; -fx-cursor: hand; }
+.play-button:hover { -fx-effect: dropshadow(gaussian, rgba(255,102,170,0.8), 16, 0.3, 0, 0); }
+.play-button:disabled { -fx-opacity: 0.4; }
