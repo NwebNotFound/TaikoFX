@@ -91,8 +91,9 @@ public final class GameCanvas extends Canvas {
         graphics.strokeOval(x - r, y - r, 2 * r, 2 * r);
     }
 
-    // Hit-note flight, AI-assisted 2026-11-04: a hit note keeps travelling in its
-    // direction of motion (left), arcs upwards, grows slightly and fades out.
+    // Hit-note flight: a hit note arcs back in the direction it came from, grows
+    // slightly and fades out. The method skeleton (flight map, noteHit, timing) was
+    // AI-assisted 2026-11-04; the arc/scale motion via Matrix3x3 is the student's work.
     private static final double FLIGHT_MS = 450;
     private final Map<Integer, double[]> hitFlights = new HashMap<>();   // id -> {hitMs, hitX}
 
@@ -127,7 +128,7 @@ public final class GameCanvas extends Canvas {
 
             boolean don = note.noteType() == NoteType.DON;
             graphics.setGlobalAlpha(1-t*t*t);
-            drawNote(graphics, p[0], p[1], don ? CENTRE : RIM, don ? CENTRE_BORDER : RIM_BORDER, 1 + 0.35 * ease);
+            drawNote(graphics, p[0], p[1], don ? CENTRE : RIM, don ? CENTRE_BORDER : RIM_BORDER, s);
             graphics.setGlobalAlpha(1);
         }
     }

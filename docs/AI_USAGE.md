@@ -49,7 +49,9 @@ Tool: Claude Code (Anthropic Claude Sonnet 5.5).
 - Hit animation: AI added `noteHit`/`drawHitFlights` in `render/GameCanvas.java`
   (hit notes fly left in an arc, grow and fade) and a `lastHitNote()` getter in
   `game/JudgementEngine.java`, plus the call in `TaikoApplication.java`. The
-  student plans to replace the hand-written flight math with their own matrices.
+  student then replaced the flight math with their own Matrix3x3 chain; AI only
+  pointed out wrong constants (distance, arc shape, fade) and suggested formulas
+  for a half-arch, which the student applied.
 - Matrix3x3: AI generated only the class skeleton (signatures, TODO comments) and
   the first three tests in `Matrix3x3Test.java` (translate, rotate, pivot rotation)
   and fixed their compile errors. AI reviewed the student's finished implementation

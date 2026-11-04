@@ -17,6 +17,10 @@ scale, shear, multiply, transform) and the tests for scale, shear and multiply o
 in `Matrix3x3Test.java`, then revised after review feedback. The class skeleton and
 the first three tests were AI-generated, see AI_USAGE.md.
 
-AI-assisted, not student-written: the song-select redesign, the hit-note flight
-animation and the `lastHitNote()` getter (see AI_USAGE.md). Planned student work:
-pixel-art assets and replacing the flight math with the student's own matrices.
+Student-written: the hit-note flight motion in `GameCanvas.drawHitFlights` (half-arch
+path, growth and fade, built from the student's own `Matrix3x3` chain), tuned by the
+student after AI feedback on wrong constants.
+
+AI-assisted, not student-written: the song-select redesign, the surrounding flight
+scaffold (flight map, `noteHit`, `lastHitNote()` getter), see AI_USAGE.md. Planned
+student work: pixel-art assets and a pivot-based drum pulse.
