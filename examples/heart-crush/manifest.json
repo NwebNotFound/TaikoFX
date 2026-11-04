@@ -1,0 +1,13 @@
+{
+  "formatVersion": 1,
+  "id": "heart-crush-test",
+  "title": "HEART CRUSH!",
+  "artist": "IRISÉ",
+  "mapper": "Codex (test fixture)",
+  "audio": "audio/song.wav",
+  "previewStartMs": 1000,
+  "licenseFile": "LICENSES.txt",
+  "difficulties": [
+    {"id": "test", "name": "Test", "level": 1, "chart": "charts/test.json"}
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "formatVersion": 1,
+  "difficultyId": "test",
+  "bpm": 120,
+  "gridStartMs": 0,
+  "offsetMs": 0,
+  "notes": [
+    {"id": "n1", "timeMs": 1000, "type": "don"},
+    {"id": "n2", "timeMs": 1500, "type": "ka"},
+    {"id": "n3", "timeMs": 2000, "type": "don"},
+    {"id": "n4", "timeMs": 2500, "type": "don"},
+    {"id": "n5", "timeMs": 3000, "type": "ka"},
+    {"id": "n6", "timeMs": 3500, "type": "don"},
+    {"id": "n7", "timeMs": 4000, "type": "ka"},
+    {"id": "n8", "timeMs": 4500, "type": "ka"}
+  ]
+}
