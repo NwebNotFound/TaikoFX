@@ -1,50 +1,84 @@
-/* AI-assisted bootstrap, 2026-10-13. See docs/AI_USAGE.md. */
-/* User-selected charcoal/beige UI palette, AI-assisted update 2026-10-20.
-   Blue/red are reserved for the Canvas notes. */
-.root { -fx-background-color: #222831; -fx-font-family: "Segoe UI"; -fx-font-size: 14px; }
-.label { -fx-text-fill: #DFD0B8; }
-.title { -fx-font-size: 38px; -fx-font-weight: bold; -fx-alignment: center;}
-.subtitle { -fx-text-fill: #948979; }
-.status { -fx-text-fill: #DFD0B8; }
-.button { -fx-background-color: #DFD0B8; -fx-text-fill: #222831; -fx-font-weight: bold; -fx-background-radius: 8; -fx-padding: 12 32; -fx-cursor: hand; -fx-border-color: transparent; -fx-border-width: 2; -fx-border-radius: 8; }
-.button:hover { -fx-background-color: #948979; }
-.button:focused { -fx-border-color: #948979; }
-.button.secondary { -fx-background-color: #393E46; -fx-text-fill: #DFD0B8; }
-.button.secondary:hover { -fx-background-color: #948979; -fx-text-fill: #222831; }
-.button.secondary:focused { -fx-border-color: #DFD0B8; }
+/* Pixel festival theme, AI-assisted 2026-11-09 (replaces the 2026-10-20 palette and the
+   osu!lazer-style song select colours). See docs/AI_USAGE.md.
+   Square corners, 3 px ink outlines and hard offset shadows match the 32x32 sprites.
+   Palette: ink #1a1423, night #2b2142 / #3d2f5c, cream #f6e7c8, red #e8433a,
+   gold #f7b733, wood #7a4b2a, blue #3fa7e8. */
+.root { -fx-background-color: #1a1423; -fx-font-family: "Consolas", "Lucida Console", monospace; -fx-font-size: 14px; -fx-font-weight: bold; }
+.label { -fx-text-fill: #f6e7c8; }
+.title { -fx-font-size: 44px; -fx-text-fill: #f7b733; -fx-alignment: center; -fx-effect: dropshadow(one-pass-box, #a4262c, 0, 0, 4, 4); }
+.subtitle { -fx-text-fill: #b9a6d9; }
+.status { -fx-text-fill: #f6e7c8; }
 
-/* osu!lazer-inspired song select. Pink accent is scoped to this screen. */
-.select-screen { -fx-background-color: linear-gradient(to bottom right, #1b1030, #2b1347 55%, #17162b); }
-.select-screen .label { -fx-text-fill: #f3e9ff; }
-.top-bar { -fx-padding: 18 28 10 28; -fx-background-color: rgba(0,0,0,0.28); }
-.search-box { -fx-background-color: rgba(255,255,255,0.10); -fx-text-fill: white; -fx-prompt-text-fill: rgba(255,255,255,0.45); -fx-background-radius: 6; -fx-padding: 9 14; -fx-font-size: 15px; -fx-highlight-fill: #ff66aa; }
-.search-box:focused { -fx-background-color: rgba(255,255,255,0.16); -fx-border-color: #ff66aa; -fx-border-radius: 6; }
-.select-screen .map-count { -fx-text-fill: rgba(255,255,255,0.55); }
+/* Chunky pixel buttons: outline, hard shadow, push down on press. */
+.button, .toggle-button { -fx-background-color: #1a1423, #e8433a; -fx-background-insets: 0, 3; -fx-background-radius: 0; -fx-text-fill: #f6e7c8; -fx-padding: 12 34; -fx-cursor: hand; -fx-effect: dropshadow(one-pass-box, rgba(0,0,0,0.55), 0, 0, 4, 4); }
+.button:hover, .button:focused { -fx-background-color: #1a1423, #f7b733; -fx-text-fill: #1a1423; }
+.button:pressed { -fx-translate-x: 2; -fx-translate-y: 2; -fx-effect: dropshadow(one-pass-box, rgba(0,0,0,0.55), 0, 0, 2, 2); }
+.button.secondary { -fx-background-color: #1a1423, #3d2f5c; }
+.button.secondary:hover, .button.secondary:focused { -fx-background-color: #1a1423, #f6e7c8; -fx-text-fill: #1a1423; }
+.menu-screen .button { -fx-pref-width: 240; -fx-font-size: 18px; }
+
+/* Song select. */
+.select-screen { -fx-background-color: #2b2142; }
+.top-bar { -fx-padding: 16 28 12 28; -fx-background-color: #1a1423; }
+.search-box { -fx-background-color: #f6e7c8, #2b2142; -fx-background-insets: 0, 3; -fx-background-radius: 0; -fx-text-fill: #f6e7c8; -fx-prompt-text-fill: #8f7fb0; -fx-padding: 9 14; -fx-font-size: 15px; -fx-highlight-fill: #e8433a; }
+.search-box:focused { -fx-background-color: #f7b733, #2b2142; }
+.map-count { -fx-text-fill: #b9a6d9; }
 .select-centre { -fx-padding: 20 0 20 28; }
-.detail-card { -fx-background-color: rgba(0,0,0,0.38); -fx-background-radius: 14; -fx-padding: 22; -fx-border-color: rgba(255,255,255,0.10); -fx-border-radius: 14; }
-.select-screen .detail-title { -fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: white; }
-.select-screen .detail-artist { -fx-font-size: 17px; -fx-text-fill: #ffb3d6; }
-.select-screen .detail-mapper { -fx-text-fill: rgba(255,255,255,0.6); }
-.select-screen .detail-status { -fx-text-fill: rgba(255,255,255,0.5); -fx-font-size: 12px; }
-.diff-chip { -fx-background-color: #ff66aa; -fx-background-radius: 20; -fx-padding: 4 12; }
-.select-screen .diff-chip { -fx-text-fill: #1b1030; -fx-font-weight: bold; }
+.detail-card { -fx-background-color: #1a1423, #f6e7c8; -fx-background-insets: 0, 3; -fx-padding: 22; -fx-effect: dropshadow(one-pass-box, rgba(0,0,0,0.5), 0, 0, 6, 6); }
+.detail-card .label { -fx-text-fill: #1a1423; }
+.detail-title { -fx-font-size: 24px; }
+.detail-card .detail-artist { -fx-font-size: 16px; -fx-text-fill: #a4262c; }
+.detail-card .detail-mapper, .detail-card .detail-status { -fx-text-fill: #6b5a50; -fx-font-size: 12px; }
+.chip-scroll, .chip-scroll > .viewport { -fx-background-color: transparent; -fx-background: transparent; -fx-padding: 0 4 4 0; }
+.diff-chip { -fx-background-color: #1a1423, #3d2f5c; -fx-background-insets: 0, 2; -fx-padding: 5 12; -fx-font-size: 12px; -fx-effect: null; }
+.diff-chip:hover { -fx-background-color: #1a1423, #5a4785; }
+.diff-chip:selected { -fx-background-color: #1a1423, #e8433a; -fx-text-fill: #f7b733; }
+.speed-button { -fx-padding: 2 12; -fx-font-size: 14px; -fx-effect: null; -fx-background-color: #1a1423, #3d2f5c; }
+.detail-card .speed-label { -fx-text-fill: #1a1423; }
+
 .song-list { -fx-background-color: transparent; -fx-control-inner-background: transparent; -fx-background-insets: 0; -fx-padding: 0; }
-.song-list .list-cell, .song-list .list-cell:filled:hover, .song-list .list-cell:filled:selected, .song-list .list-cell:filled:selected:focused, .song-list .list-cell:empty { -fx-background-color: transparent; -fx-padding: 5 10 5 48; }
-.song-list .scroll-bar:vertical { -fx-background-color: transparent; -fx-pref-width: 8; }
-.song-list .scroll-bar .track { -fx-background-color: transparent; }
-.song-list .scroll-bar .thumb { -fx-background-color: rgba(255,102,170,0.55); -fx-background-radius: 4; }
+.song-list .list-cell, .song-list .list-cell:filled:hover, .song-list .list-cell:filled:selected, .song-list .list-cell:filled:selected:focused, .song-list .list-cell:empty { -fx-background-color: transparent; -fx-padding: 5 14 5 48; }
+.song-list .scroll-bar:vertical { -fx-background-color: transparent; -fx-pref-width: 10; }
+.song-list .scroll-bar .track { -fx-background-color: #1a1423; -fx-background-radius: 0; }
+.song-list .scroll-bar .thumb { -fx-background-color: #f7b733; -fx-background-radius: 0; }
 .song-list .scroll-bar .increment-button, .song-list .scroll-bar .decrement-button { -fx-pref-height: 0; -fx-padding: 0; }
-.song-card { -fx-background-color: rgba(255,255,255,0.08); -fx-background-radius: 10; -fx-padding: 12 20; -fx-border-color: rgba(255,255,255,0.12); -fx-border-radius: 10; -fx-cursor: hand; -fx-pref-height: 76; -fx-alignment: center-left; }
-.list-cell:hover .song-card { -fx-background-color: rgba(255,255,255,0.16); }
-.list-cell:selected .song-card { -fx-background-color: linear-gradient(to right, #ff66aa, #c2438a); -fx-border-color: white; -fx-effect: dropshadow(gaussian, rgba(255,102,170,0.75), 22, 0.25, 0, 0); }
-.select-screen .card-title { -fx-font-size: 17px; -fx-font-weight: bold; -fx-text-fill: white; }
-.select-screen .card-artist { -fx-text-fill: rgba(255,255,255,0.85); }
-.select-screen .card-meta { -fx-text-fill: rgba(255,255,255,0.55); -fx-font-size: 12px; }
-.list-cell:selected .card-meta { -fx-text-fill: rgba(255,255,255,0.85); }
-.bottom-bar { -fx-padding: 12 28; -fx-background-color: rgba(0,0,0,0.45); }
-.select-screen .help-text { -fx-text-fill: rgba(255,255,255,0.4); -fx-font-size: 12px; }
-.back-button { -fx-background-color: #3a2a55; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 6; -fx-padding: 10 28; -fx-cursor: hand; }
-.back-button:hover { -fx-background-color: #54397c; }
-.play-button { -fx-background-color: linear-gradient(to right, #ff66aa, #c2438a); -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16px; -fx-background-radius: 6; -fx-padding: 10 48; -fx-cursor: hand; }
-.play-button:hover { -fx-effect: dropshadow(gaussian, rgba(255,102,170,0.8), 16, 0.3, 0, 0); }
+.song-card { -fx-background-color: #1a1423, #3d2f5c; -fx-background-insets: 0, 3; -fx-padding: 12 20; -fx-cursor: hand; -fx-pref-height: 76; -fx-alignment: center-left; -fx-effect: dropshadow(one-pass-box, rgba(0,0,0,0.45), 0, 0, 4, 4); }
+.list-cell:hover .song-card { -fx-background-color: #1a1423, #4b3a70; }
+.list-cell:selected .song-card { -fx-background-color: #f7b733, #e8433a; }
+.card-title { -fx-font-size: 16px; -fx-text-fill: #f6e7c8; }
+.card-artist { -fx-text-fill: #d8c8f0; }
+.card-meta { -fx-text-fill: #9d8cc0; -fx-font-size: 11px; }
+.list-cell:selected .card-meta, .list-cell:selected .card-artist { -fx-text-fill: #f6e7c8; }
+/* Open song: its difficulties are listed underneath (osu!-style grouping). */
+.song-card.song-card-open { -fx-background-color: #f7b733, #5a3a7a; }
+.diff-card { -fx-background-color: #1a1423, #2b2142; -fx-background-insets: 0, 3; -fx-padding: 8 18; -fx-cursor: hand; -fx-translate-x: 0; }
+.song-list .list-cell:filled .diff-card { -fx-pref-height: 40; }
+.list-cell:hover .diff-card { -fx-background-color: #1a1423, #4b3a70; }
+.list-cell:selected .diff-card { -fx-background-color: #f7b733, #e8433a; }
+.diff-name { -fx-text-fill: #f6e7c8; -fx-font-size: 14px; }
+.diff-stars { -fx-text-fill: #f7b733; -fx-font-size: 13px; }
+.list-cell:selected .diff-stars { -fx-text-fill: #1a1423; }
+/* Local leaderboard in the detail card. */
+.detail-card .board-title { -fx-text-fill: #a4262c; -fx-font-size: 13px; -fx-padding: 6 0 0 0; }
+.detail-card .board-row { -fx-text-fill: #1a1423; -fx-font-size: 11px; }
+.detail-card .board-best { -fx-text-fill: #a4262c; -fx-font-size: 11px; }
+.detail-card .board-empty { -fx-text-fill: #6b5a50; -fx-font-size: 11px; }
+.bottom-bar { -fx-padding: 12 28; -fx-background-color: #1a1423; }
+.help-text { -fx-text-fill: #8f7fb0; -fx-font-size: 12px; }
+.back-button { -fx-background-color: #1a1423, #3d2f5c; }
+.play-button { -fx-font-size: 16px; -fx-padding: 10 48; }
 .play-button:disabled { -fx-opacity: 0.4; }
+
+/* Pause overlay over the gameplay canvas. */
+.pause-overlay { -fx-background-color: rgba(26,20,35,0.82); }
+.pause-overlay .button { -fx-pref-width: 220; }
+
+/* Results. */
+.results-screen { -fx-background-color: #2b2142; -fx-padding: 24; }
+.verdict { -fx-font-size: 34px; -fx-text-fill: #f7b733; -fx-effect: dropshadow(one-pass-box, #a4262c, 0, 0, 4, 4); }
+.grade { -fx-font-size: 120px; -fx-effect: dropshadow(one-pass-box, #1a1423, 0, 0, 6, 6); }
+.grade-clear { -fx-text-fill: #f7b733; }
+.grade-failed { -fx-text-fill: #8e5bd6; }
+.results-card { -fx-background-color: #1a1423, #f6e7c8; -fx-background-insets: 0, 3; -fx-padding: 20 28; -fx-effect: dropshadow(one-pass-box, rgba(0,0,0,0.5), 0, 0, 6, 6); }
+.results-card .stat-name { -fx-text-fill: #6b5a50; }
+.results-card .stat-value { -fx-text-fill: #1a1423; -fx-font-size: 16px; }

@@ -11,3 +11,8 @@ Thumbs.db
 # Audio with uncleared rights must not be published
 examples/**/audio/
 *.wav
+
+# Maps converted from osu! are third-party material for local testing only
+examples/osu-*/
+*.osz
+*.osu

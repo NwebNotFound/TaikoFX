@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import de.thu.taiko2d.model.ChartInfo;
 import de.thu.taiko2d.model.MapManifest;
 import de.thu.taiko2d.model.Note;
 import de.thu.taiko2d.model.NoteType;
@@ -29,6 +30,26 @@ public final class BeatmapJson {
                 notes.add(new Note(id++, n.get("timeMs").getAsLong() + offsetMs, type));
             }
             return notes;
+        }
+    }
+
+    /** BPM, grid start and optional scroll multiplier of a chart. AI-assisted 2026-11-09. */
+    public static ChartInfo loadChartInfo(Path chartFile) throws IOException {
+        try (Reader reader = Files.newBufferedReader(chartFile)) {
+            JsonObject root = JsonParser.parseReader(reader).getAsJsonObject();
+            double bpm = root.has("bpm") ? root.get("bpm").getAsDouble() : 120;
+            long grid = root.has("gridStartMs") ? root.get("gridStartMs").getAsLong() : 0;
+            long offset = root.has("offsetMs") ? root.get("offsetMs").getAsLong() : 0;
+            double scroll = root.has("scrollMultiplier") ? root.get("scrollMultiplier").getAsDouble() : 1.0;
+            List<ChartInfo.Section> kiai = new ArrayList<>();
+            if (root.has("kiai")) {
+                for (JsonElement element : root.getAsJsonArray("kiai")) {
+                    JsonObject k = element.getAsJsonObject();
+                    kiai.add(new ChartInfo.Section(k.get("startMs").getAsLong() + offset,
+                                                   k.get("endMs").getAsLong() + offset));
+                }
+            }
+            return new ChartInfo(bpm, grid + offset, scroll, kiai);
         }
     }
 

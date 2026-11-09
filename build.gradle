@@ -52,3 +52,24 @@ tasks.register('resolveDependencies') {
         configurations.testRuntimeClasspath.files
     }
 }
+
+// AI-generated (Claude Code, 2026-11-09): developer-only osu! -> TaikoFX map converter.
+// Lives in its own source set so it is never part of the game jar or installDist.
+// Usage: .\dev.ps1 convertOsu --args="C:\path\to\map.osz"
+sourceSets {
+    tools
+    test {
+        compileClasspath += sourceSets.tools.output
+        runtimeClasspath += sourceSets.tools.output
+    }
+}
+dependencies {
+    toolsImplementation 'com.google.code.gson:gson:2.14.0'
+}
+tasks.register('convertOsu', JavaExec) {
+    group = 'tools'
+    description = 'Converts an osu! .osz/.osu into a git-ignored examples/osu-<name>/ map for local testing.'
+    classpath = sourceSets.tools.runtimeClasspath
+    mainClass = 'de.thu.taiko2d.tools.osu.ConvertOsu'
+    workingDir = projectDir
+}
