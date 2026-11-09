@@ -10,10 +10,11 @@ import javafx.scene.transform.Affine;
  * Drum mascot that bobs to the beat, swings a stick on every drum hit and does a
  * flip on combo milestones (50x, 100x, ...).
  *
- * SCAFFOLD: the placeholder pixel art, state handling and drawing with a Matrix3x3
- * as the canvas transform were AI-generated 2026-11-09 (see docs/AI_USAGE.md).
- * The three TODO transform methods are the student's part: they decide how the
- * mascot moves, using the student's own {@link Matrix3x3}.
+ * The placeholder pixel art, state handling and drawing with a Matrix3x3 as the
+ * canvas transform were AI-generated 2026-11-09 (see docs/AI_USAGE.md).
+ * {@link #idleTransform}, {@link #hitTransform}, {@link #flipTransform},
+ * {@link #sadTransform} and {@link #onMiss} were written by Nils using his own
+ * {@link Matrix3x3}.
  *
  * Sprite-local coordinates: the origin is the centre between the mascot's feet,
  * x goes right, y goes DOWN (screen convention), so the body is at negative y.
@@ -38,15 +39,12 @@ final class Mascot {
     private int lastCombo;
     private double missMs = Double.NEGATIVE_INFINITY;
 
-    // ---------------------------------------------------------------- student TODOs
+    // ---------------------------------------------------------------- motion transforms
 
     /**
-     * TODO (student): idle bob. {@code beatPulse} is 1 exactly on a beat and falls to 0.
-     * Idea: scale about the feet, slightly wider and shorter on the beat
-     * (squash), e.g. translate(footX, footY) * scale(1 + a*pulse, 1 - a*pulse).
-     * Because the origin is already at the feet, the feet stay on the ground.
-     *
-     * Placeholder: just places the mascot, no motion.
+     * Idle bob on the beat. {@code beatPulse} is 1 exactly on a beat and falls to 0.
+     * Scales about the feet (slightly wider and shorter on the beat); because the
+     * origin is already at the feet, they stay on the ground.
      */
     static Matrix3x3 idleTransform(double beatPulse, double footX, double footY) {
         double intensity = 0.12;
@@ -56,12 +54,9 @@ final class Mascot {
     }
 
     /**
-     * TODO (student): reaction to a drum hit, {@code t} goes 0 -> 1 over HIT_MS.
-     * {@code left} says which hand hit. Idea: a quick lean towards that side, a
-     * rotation about the feet (pivot at the origin), plus a small squash that
-     * springs back: the strength should go to 0 at t = 1.
-     *
-     * Placeholder: no motion (the stick still changes, that is the sprite frame).
+     * Reaction to a drum hit; {@code t} goes 0 -> 1 over HIT_MS. {@code left} says
+     * which hand hit. A quick lean toward that side (rotation about the feet) plus
+     * a small squash that springs back; strength fades to 0 at t = 1.
      */
     static Matrix3x3 hitTransform(double t, boolean left, double footX, double footY) {
         double fade = Math.sin((1.0 - t) * Math.PI * 0.5);
@@ -73,14 +68,10 @@ final class Mascot {
     }
 
     /**
-     * TODO (student): the combo flip, {@code t} goes 0 -> 1 over FLIP_MS.
-     * {@code spins} is 1 at 50x and 2 at every 100x.
-     * Idea: jump on a parabola (like the hit-note flight) and rotate by
-     * spins * 2 * PI * t about the BODY CENTRE, which is the point (0, -bodyHeight / 2)
-     * in sprite-local coordinates, not the feet. That is a rotation about a pivot:
-     * translate(pivot) * rotate(angle) * translate(-pivot).
-     *
-     * Placeholder: no motion.
+     * Combo flip; {@code t} goes 0 -> 1 over FLIP_MS. {@code spins} is 1 at 50x and
+     * 2 at every 100x. Jumps on a parabola and rotates by spins * 2 * PI * t about
+     * the body centre (0, -bodyHeight / 2) in sprite-local coordinates, not the
+     * feet: translate(pivot) * rotate(angle) * translate(-pivot).
      */
     static Matrix3x3 flipTransform(double t, int spins, double footX, double footY, double bodyHeight) {
         double maxJumpHeight = 80.0;
@@ -91,8 +82,8 @@ final class Mascot {
     }
 
     /**
-     * TODO (student): sad reaction to a miss, {@code t} goes 0 -> 1.
-     * Placeholder: just places the mascot, no motion.
+     * Sad reaction to a miss; {@code t} goes 0 -> 1 over MISS_MS. Horizontal shake
+     * that fades out, with a small vertical bob.
      */
     static Matrix3x3 sadTransform(double t, double footX, double footY) {
         double fade = 1.0 - t;
@@ -104,7 +95,7 @@ final class Mascot {
 
     // ---------------------------------------------------------------- game hooks
 
-    /** TODO (student): remember when the miss happened. Call it from GameCanvas.showJudgement on MISS. */
+    /** Remembers when the miss happened; called from GameCanvas.showJudgement on MISS. */
     void onMiss(double atMs) {
         this.missMs = atMs;
     }
@@ -216,8 +207,7 @@ final class Mascot {
     }
 
     /**
-     * TODO (student): the sad frame (sad face, both sticks down), built like {@link #build}.
-     * Placeholder: no frame yet.
+     * Sad frame (sad face, tear pixels, both sticks down), built like {@link #build}.
      */
     private static Image buildSad() {
         char[][] grid = new char[BODY.length][20];

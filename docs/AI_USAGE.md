@@ -87,15 +87,16 @@ Tool: Claude Code (Anthropic Claude Opus 5.5). Kept short at the student's reque
   press slot per drum half, difficulty choice + speed setting in song select,
   pause menu, results screen, hidden editor button and the new pixel CSS theme.
   The converter now also stores the osu! slider multiplier as `scrollMultiplier`.
-- Scaffold only, student to write: `WaveHealthBar.waveOffset/snap` and
-  `Mascot.idleTransform/hitTransform/flipTransform` (Matrix3x3 chains). Until then
-  they are flat/identity placeholders. The bar drawing loop and mascot drawing are AI.
-- Unchanged student code: `Matrix3x3`, `drawHitFlights`, the 32x32 sprites.
+- AI scaffold (bar drawing loop and mascot state/drawing/frames); student filled in the
+  motion methods listed under "Student-written since" below.
+- Unchanged earlier student code: `Matrix3x3`, `drawHitFlights`, the 32x32 sprites.
 - Follow-up: fever meter drains when idle and during fever; `hype` grows the crowd, which
   is scattered on a jittered grid over the lower screen and walks in/out from the sides;
   fever glowstick dance (AI).
-- Student-written since: `WaveHealthBar.waveOffset` (two travelling sines) and `snap`, and
-  the three `Mascot` transforms (beat squash, hit lean, pivot flip).
+- Student-written since: `WaveHealthBar.waveOffset` (two travelling sines) and `snap`;
+  `Mascot.idleTransform` (beat squash), `hitTransform` (lean + squash), `flipTransform`
+  (parabola jump + body-centre pivot rotation), `sadTransform` (fading horizontal shake)
+  and `onMiss` (stores miss time; called from `GameCanvas.showJudgement` on MISS).
 - Tests: HealthGauge, ComboMilestone, ChartInfo and converter tests added. Gameplay
   view checked only as offscreen canvas snapshots, not played with audio.
 

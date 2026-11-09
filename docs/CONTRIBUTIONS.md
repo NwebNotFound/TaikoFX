@@ -7,8 +7,8 @@ Codex generated the initial Gradle configuration, JavaFX launcher/window/Canvas,
 CSS, developer script and setup documentation on 13 October 2026. These are
 AI-assisted contributions, not independently authored student implementation.
 
-Future student-authored gameplay, audio, editor and format work should be recorded
-here as it is completed. No gameplay or full editor exists in this bootstrap.
+Student-authored gameplay, audio, editor and format work is recorded here as it is
+completed. The bootstrap itself had no gameplay; later updates below cover what was added.
 
 ## Update 4 November 2026
 
@@ -22,5 +22,21 @@ path, growth and fade, built from the student's own `Matrix3x3` chain), tuned by
 student after AI feedback on wrong constants.
 
 AI-assisted, not student-written: the song-select redesign, the surrounding flight
-scaffold (flight map, `noteHit`, `lastHitNote()` getter), see AI_USAGE.md. Planned
-student work: pixel-art assets and a pivot-based drum pulse.
+scaffold (flight map, `noteHit`, `lastHitNote()` getter), see AI_USAGE.md.
+
+Student-written: the 32x32 note / hit-area / hit-effect sprites (drawn in Aseprite,
+exported to PNG under `src/main/resources/de/thu/taiko2d/sprites`).
+
+## Update 9 November 2026
+
+Student-written: `WaveHealthBar.waveOffset` (two travelling sines) and `snap` (art-pixel
+grid snap). Student-written: the `Mascot` motion transforms
+`idleTransform` (beat squash about the feet), `hitTransform` (lean + squash fading out),
+`flipTransform` (parabola jump + rotation about the body-centre pivot:
+`translate(pivot) * rotate * translate(-pivot)`), `sadTransform` (horizontal shake fading
+out) and `onMiss` (stores miss time; wired from `GameCanvas.showJudgement` on MISS).
+
+AI-assisted, not student-written: the festival gameplay screen scaffold (`HealthGauge`,
+`ComboMilestone`, `ChartInfo`, `PixelArt`, `FestivalScene`, `WaveHealthBar` drawing loop,
+`Mascot` state/drawing/pixel frames), pause/results, song-select difficulty grouping,
+leaderboard, osu! converter tool, kiai effects and judging tweaks — see AI_USAGE.md.
