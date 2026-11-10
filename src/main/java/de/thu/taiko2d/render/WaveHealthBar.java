@@ -7,9 +7,9 @@ import javafx.scene.paint.Color;
 /**
  * Pixelated "liquid" health bar with a moving wave on its surface.
  *
- * SCAFFOLD: the frame, colours, fever strip and column drawing loop were
- * AI-generated 2026-11-09 (see docs/AI_USAGE.md). The two TODO methods,
- * {@link #waveOffset} and {@link #snap}, are the student's part.
+ * The frame, colours, fever strip and column drawing loop were AI-generated
+ * 2026-11-09 (see docs/AI_USAGE.md). {@link #waveOffset} and {@link #snap}
+ * were written by Nils.
  */
 final class WaveHealthBar {
     /** Size of one art pixel on screen. The bar is drawn as PIXEL x PIXEL blocks. */
@@ -25,15 +25,13 @@ final class WaveHealthBar {
     private static final Color FEVER_B = Color.web("#fff1a8");
 
     /**
-     * TODO (student): vertical offset of the liquid surface, in screen pixels, at
-     * horizontal position {@code x} (pixels from the bar's left edge) and song time
+     * Vertical offset of the liquid surface, in screen pixels, at horizontal
+     * position {@code x} (pixels from the bar's left edge) and song time
      * {@code timeMs}. Positive values go down.
      *
-     * Idea: a travelling sine wave, amplitude * sin(k * x - omega * t), maybe with a
-     * second smaller sine on top so it does not look too regular. {@code amplitude}
-     * already grows during fever and on the beat.
-     *
-     * Placeholder: no wave at all (flat surface).
+     * Two travelling sines: a primary wave plus a smaller, faster secondary so
+     * the surface does not look too regular. {@code amplitude} already grows
+     * during fever and on the beat.
      */
     static double waveOffset(double x, double timeMs, double amplitude) {
         double t = timeMs / 1000.0;
@@ -41,6 +39,8 @@ final class WaveHealthBar {
         double secondary = 0.35 * Math.sin(0.15 * x - 10.0 * t);
         return amplitude * (primary + secondary);
     }
+
+    /** Snaps {@code value} down to the nearest art-pixel grid line (multiples of {@link #PIXEL}). */
     static double snap(double value) {
         return Math.floor(value / PIXEL) * PIXEL;
     }

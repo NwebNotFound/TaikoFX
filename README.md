@@ -1,12 +1,38 @@
 # TaikoFX
 
-Starter for a solo JavaFX rhythm game and beatmap editor. Based on the Taiko2D
-specification in [docs/PROJECT_SPEC.md](docs/PROJECT_SPEC.md); the repository/app
-name is **TaikoFX**. Package names remain `de.thu.taiko2d`.
+Solo JavaFX taiko-style rhythm game (and planned beatmap editor). Based on the
+Taiko2D specification in [docs/PROJECT_SPEC.md](docs/PROJECT_SPEC.md); the
+repository/app name is **TaikoFX**. Package names remain `de.thu.taiko2d`.
 
-The window contains a resizable Canvas lane, hit target and static example notes.
-Play and Editor are placeholders; Exit works. Gameplay, audio and map editing
-are intentionally left for the next development stages.
+You pick a song and difficulty, notes scroll along a pixel lane, and you hit
+don/ka with the keyboard. The festival gameplay screen has a liquid health/fever
+bar, a drum mascot that bobs, leans, flips on combo milestones and shakes on
+misses, lanterns/crowd/yagura scenery, kiai fireworks, hit-note flight arcs,
+pause, results and a local leaderboard. Song select is card-based with search
+and per-song difficulty lists. Maps are JSON charts under `examples/`; an
+optional developer tool in `src/tools` converts osu! `.osz`/`.osu` into that
+format (converted maps are git-ignored and must not be submitted).
+
+Own contributions and AI usage are logged in
+[docs/CONTRIBUTIONS.md](docs/CONTRIBUTIONS.md) and
+[docs/AI_USAGE.md](docs/AI_USAGE.md). Sources are in
+[docs/SOURCES.md](docs/SOURCES.md).
+
+## Features
+
+- Gameplay: don/ka notes, judgement windows, combo, health + fever, lead-in /
+  skip for long intros and breaks, pause and results.
+- Rendering: Canvas lane with student-drawn 32×32 sprites, hit-note flights via
+  `Matrix3x3`, `WaveHealthBar`, `Mascot` transforms, `FestivalScene` pixel art.
+- Song select: osu!-style cards, difficulty list under the selected song, speed
+  setting, preview audio, local scores in `~/.taikofx/scores.json`.
+- Charts: bundled `examples/heart-crush` reference map; developer `convertOsu`
+  Gradle task for personal practice maps.
+- Tests: JUnit for matrix, judgement, health, combo, chart info, lead-in,
+  leaderboard, score store, beatmap JSON and the osu converter (70 tests).
+
+The integrated beatmap editor is still a placeholder / hidden; packaging with a
+bundled runtime is not done yet.
 
 ## Open in IntelliJ
 
@@ -47,8 +73,26 @@ rendered blank on the setup machine. Development `run` uses its working default
 pipeline. Recheck acceleration during the timing spike and final packaging.
 
 Pinned stack: Java 25, Gradle 9.1.0, JavaFX 25.0.4, OpenJFX plugin 0.1.0,
-Gson 2.14.0 and JUnit Jupiter 6.0.3. There are no tests yet because no pure-Java
-model has been created. See [test report](docs/TEST_REPORT.md).
+Gson 2.14.0 and JUnit Jupiter 6.0.3. See the early bootstrap notes in
+[docs/TEST_REPORT.md](docs/TEST_REPORT.md).
+
+### Developer osu! converter (optional)
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\dev.ps1 convertOsu --args="C:\path\to\map.osz"
+```
+
+Writes into `examples/osu-<artist-title>/`. Those folders are git-ignored;
+do not commit, publish or submit converted third-party songs/charts.
+
+## Linux / macOS (Gradle wrapper)
+
+```bash
+export JAVA_HOME=/path/to/jdk-25
+export PATH="$JAVA_HOME/bin:$PATH"
+./gradlew --no-daemon clean test
+./gradlew --no-daemon run
+```
 
 ## Work on another PC
 
@@ -63,17 +107,17 @@ Open the cloned folder in IntelliJ and set both SDK and Gradle JVM to 25.
 Before switching machines, commit and push your work. On the other machine,
 `git pull --ff-only` before editing. Build caches and personal IDE settings are ignored.
 
-## Start implementing
+## Where to look in the code
 
-- `TaikoApplication.java`: main window composition and placeholder navigation.
-- `render/GameCanvas.java`: lane drawing; later calculate note X from song time.
-- `Launcher.java`: ordinary Java entry point; normally needs no changes.
+- `TaikoApplication.java`: window, song select, pause, results, input wiring.
+- `render/GameCanvas.java`: lane, judgements, flights, health bar and mascot draw.
+- `render/Matrix3x3.java`, `WaveHealthBar.java`, `Mascot.java`, `FestivalScene.java`:
+  transforms and festival visuals (see CONTRIBUTIONS / AI_USAGE for authorship).
+- `game/`: `JudgementEngine`, `HealthGauge`, `ComboMilestone`, `LeadInClock`, `InputState`.
+- `model/` + `io/`: notes, chart info, manifests, JSON load, local scores.
+- `src/tools/.../osu/`: separate developer converter (not in the game jar).
 - `src/main/resources/css/app.css`: colours and UI styling.
-- Create `audio/AudioTransport.java` and a JavaFX implementation first, then test
-  a generated click track and timing as described in section 7 of the specification.
-- Then add plain `model` types and a deterministic `game/JudgementEngine`, followed
-  by the integrated editor and bounded `.tmap` I/O. Empty package directories are
-  prepared locally; Git tracks files, so create packages as you add classes.
+- `Launcher.java`: ordinary Java entry point; normally needs no changes.
 
 Review the separate Moodle AI policy and exact assignment dates yourself.
 Attribution is in `docs/SOURCES.md`, `docs/CONTRIBUTIONS.md`, and `docs/AI_USAGE.md`.
