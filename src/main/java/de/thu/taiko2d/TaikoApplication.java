@@ -111,13 +111,13 @@ public final class TaikoApplication extends Application {
         VBox footer = new VBox(16, buttons, controls);
         footer.setAlignment(Pos.CENTER);
 
-        root.setPadding(new Insets(32));
         VBox menu = new VBox(24, header, footer);
+        menu.setPadding(new Insets(32));
         menu.setAlignment(Pos.CENTER);
         menu.getStyleClass().add("menu-screen");
         Platform.runLater(play::requestFocus);
 
-        showScreen(menu);
+        showScreen(new ScaledPane(menu));
     }
     public void showSongSelection(){
         // osu!-style carousel: the selected song opens and its difficulties appear underneath.
@@ -333,8 +333,7 @@ public final class TaikoApplication extends Application {
             }
         });
 
-        root.setPadding(Insets.EMPTY);
-        showScreen(screen);
+        showScreen(new ScaledPane(screen));
         if (visible.isEmpty()) { rebuild.run(); showNothing.run(); } else openSong.accept(visible.getFirst());
         Platform.runLater(search::requestFocus);
     }
@@ -442,6 +441,9 @@ public final class TaikoApplication extends Application {
         game.setChartInfo(chartInfo);
         game.setGauge(gauge);
         StackPane screen = new StackPane(game);
+        // Unmanaged: otherwise the canvas size becomes the pane's minimum size and the
+        // window can never shrink again after being maximised / full screen.
+        game.setManaged(false);
         game.widthProperty().bind(screen.widthProperty());
         game.heightProperty().bind(screen.heightProperty());
 
@@ -478,7 +480,7 @@ public final class TaikoApplication extends Application {
         pauseMenu.setAlignment(Pos.CENTER);
         pauseMenu.getStyleClass().add("pause-overlay");
         pauseMenu.setVisible(false);
-        screen.getChildren().add(pauseMenu);
+        screen.getChildren().add(new ScaledPane(pauseMenu));
 
         Runnable pause = () -> {
             if (paused[0] || ended[0]) return;
@@ -537,7 +539,7 @@ public final class TaikoApplication extends Application {
         player.setOnError(() -> System.err.println("Audio error: " + player.getError()));
         player.setOnReady(() -> {
             // Time a note needs to scroll from the right edge to the drum (drum at 18 % width).
-            double travelMs = Math.max(1, game.getWidth()) * 0.82 / chartInfo.pixelsPerMs(playerSpeed);
+            double travelMs = Math.max(1, game.viewWidth()) * 0.82 / chartInfo.pixelsPerMs(playerSpeed);
             double leadIn = LeadInClock.leadInFor(firstNoteMs, travelMs);
             travel[0] = travelMs;
             clock[0] = new LeadInClock(new LeadInClock.Audio() {
@@ -630,8 +632,7 @@ public final class TaikoApplication extends Application {
         screen.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             if (event.getCode() == KeyCode.ESCAPE) { showSongSelection(); event.consume(); }
         });
-        root.setPadding(Insets.EMPTY);
-        showScreen(screen);
+        showScreen(new ScaledPane(screen));
         Platform.runLater(retry::requestFocus);
     }
 

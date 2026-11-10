@@ -51,12 +51,31 @@ public final class GameCanvas extends Canvas {
     private final WaveHealthBar healthBar = new WaveHealthBar();
     private HealthGauge gauge = new HealthGauge();
 
+    /**
+     * Window-size scale (AI-generated 2026-11-10): the scene is drawn in design units
+     * ({@link #viewWidth()} x {@link #viewHeight()}) and one context scale blows it up to the
+     * real canvas, so lane, notes, crowd and text all grow with the window.
+     */
+    private double uiScale() { return ViewScale.pixelSnapped(getWidth(), getHeight(), SPRITE_SCALE); }
+
+    /** Canvas width in design units (what all layout code in this class works in). */
+    public double viewWidth() { return getWidth() / uiScale(); }
+
+    /** Canvas height in design units. */
+    public double viewHeight() { return getHeight() / uiScale(); }
+
     private void draw() {
-        double width = getWidth();
-        double height = getHeight();
-        if (width <= 0 || height <= 0) return;
+        if (getWidth() <= 0 || getHeight() <= 0) return;
         GraphicsContext graphics = getGraphicsContext2D();
-        graphics.clearRect(0, 0, width, height);
+        graphics.clearRect(0, 0, getWidth(), getHeight());
+        graphics.save();
+        double ui = uiScale();
+        graphics.scale(ui, ui);
+        drawScene(graphics, getWidth() / ui, getHeight() / ui);
+        graphics.restore();
+    }
+
+    private void drawScene(GraphicsContext graphics, double width, double height) {
         double laneY = Math.round(height * 0.45);
         double targetX = width * 0.18;
         double half = SPRITE_PX * SPRITE_SCALE / 2.0 + 14;   // lane grows with the sprites
@@ -351,7 +370,7 @@ public final class GameCanvas extends Canvas {
 
     public void noteHit(Note note, double atMs) {
         if (note == null) return;
-        double hitX = getWidth() * 0.18 + (note.timeMs() - atMs) * speed;
+        double hitX = viewWidth() * 0.18 +(note.timeMs() - atMs) * speed;
         hitFlights.put(note.id(), new double[] {atMs, hitX});
     }
 

@@ -158,7 +158,9 @@ final class Mascot {
 
         g.save();
         // Matrix3x3 (row-major, p' = M p) to JavaFX Affine (mxx, mxy, tx, myx, myy, ty).
-        g.setTransform(new Affine(m.get(0, 0), m.get(0, 1), m.get(0, 2),
+        // transform() multiplies onto the canvas's window scale S (result S * M); setTransform
+        // would replace S and the mascot would not grow with the window (fix 2026-11-10, AI).
+        g.transform(new Affine(m.get(0, 0), m.get(0, 1), m.get(0, 2),
                                   m.get(1, 0), m.get(1, 1), m.get(1, 2)));
         g.setImageSmoothing(false);
         g.drawImage(frame, -width / 2, -height, width, height);

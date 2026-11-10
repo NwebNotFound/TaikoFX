@@ -129,3 +129,18 @@ Tool: Claude Code (Anthropic Claude Opus 5.5). AI-generated at the student's req
   plus two fountains on the yagura roof for 3.5 s when a kiai section starts
   (`ChartInfo.lastKiaiStart`, ignores sub-second kiai flashes). Placeholder effects in the
   AI-generated `FestivalScene`; the student may replace them.
+
+## 10 November 2026 - window-size scaling
+
+Tool: Claude Code (Anthropic Claude Opus 5.5). AI-generated at the student's request
+("when resizing or going from full screen to windowed a lot looks bad or too small"):
+- `render/ViewScale` (+ `ViewScaleTest`): one uniform scale from the window size, based on
+  an 800 x 560 design size; the gameplay variant snaps to thirds so the 32 px sprites stay crisp.
+- `GameCanvas.draw` now applies that scale to the GraphicsContext and draws the scene in
+  design units (`viewWidth()/viewHeight()`), so lane, notes, crowd, mascot and text grow
+  with the window. The student's hit-flight Matrix3x3 chain is unchanged.
+- `ScaledPane` scales the menus, song select, results and pause overlay the same way.
+- `Mascot.draw`: `g.setTransform(M)` -> `g.transform(M)`, so the student's mascot matrix is
+  multiplied onto the window scale instead of replacing it (the mascot did not scale).
+- The gameplay canvas is now unmanaged in its StackPane; before, its bound size became the
+  pane's minimum size and the window could not shrink back after being maximised.
