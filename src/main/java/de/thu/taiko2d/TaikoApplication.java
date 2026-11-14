@@ -26,6 +26,9 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.TransferMode;
+import javafx.stage.FileChooser;
+import java.io.File;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
@@ -35,6 +38,7 @@ import de.thu.taiko2d.io.BeatmapJson;
 import de.thu.taiko2d.model.ChartInfo;
 import de.thu.taiko2d.model.MapManifest;
 import de.thu.taiko2d.model.Note;
+import de.thu.taiko2d.io.MapImporter;
 import de.thu.taiko2d.io.ScoreStore;
 import de.thu.taiko2d.model.Leaderboard;
 import de.thu.taiko2d.model.ScoreEntry;
@@ -68,6 +72,10 @@ public final class TaikoApplication extends Application {
     /** Local high scores, saved in ~/.taikofx/scores.json. */
     private final ScoreStore scoreStore = new ScoreStore(ScoreStore.defaultFile());
     private Leaderboard leaderboard = new Leaderboard();
+    /** Imported maps live in ~/.taikofx/maps, next to the scores. */
+    private final MapImporter importer = new MapImporter(MapImporter.defaultLibrary());
+    /** What a file drop does on the current screen; null = drops are ignored (e.g. gameplay). */
+    private Consumer<List<Path>> onFilesDropped;
 
     @Override
     public void start(Stage stage) {
@@ -79,6 +87,23 @@ public final class TaikoApplication extends Application {
         showMainMenu();
         Scene scene = new Scene(root, 960, 560);
         scene.getStylesheets().add(getClass().getResource("/css/app.css").toExternalForm());
+        // Drag a .tmap/.zip package or a map folder onto the window to import it (AI-assisted 2026-11-14).
+        scene.setOnDragOver(event -> {
+            if (onFilesDropped != null && event.getDragboard().hasFiles()
+                    && event.getDragboard().getFiles().stream().anyMatch(f -> MapImporter.looksImportable(f.toPath()))) {
+                event.acceptTransferModes(TransferMode.COPY);
+            }
+            event.consume();
+        });
+        scene.setOnDragDropped(event -> {
+            boolean done = false;
+            if (onFilesDropped != null && event.getDragboard().hasFiles()) {
+                onFilesDropped.accept(event.getDragboard().getFiles().stream().map(File::toPath).toList());
+                done = true;
+            }
+            event.setDropCompleted(done);
+            event.consume();
+        });
         stage.focusedProperty().addListener((o, was, focused) -> {
             if (!focused && onWindowBlur != null) onWindowBlur.run();
         });
@@ -108,7 +133,9 @@ public final class TaikoApplication extends Application {
         buttons.setAlignment(Pos.CENTER);
         Label controls = new Label("F / J  don (centre)   ·   D / K  ka (rim)   ·   Esc  pause");
         controls.getStyleClass().add("subtitle");
-        VBox footer = new VBox(16, buttons, controls);
+        Label dropHint = new Label("Drop osu! maps (.osz) or TaikoFX maps (.tmap / .zip / folder) here to import");
+        dropHint.getStyleClass().add("help-text");
+        VBox footer = new VBox(16, buttons, controls, dropHint);
         footer.setAlignment(Pos.CENTER);
 
         VBox menu = new VBox(24, header, footer);
@@ -118,21 +145,78 @@ public final class TaikoApplication extends Application {
         Platform.runLater(play::requestFocus);
 
         showScreen(new ScaledPane(menu));
+        onFilesDropped = files -> {          // open song select, then import there
+            showSongSelection();
+            onFilesDropped.accept(files);
+        };
     }
-    public void showSongSelection(){
+    public void showSongSelection() { showSongSelection(null, ""); }
+
+    /**
+     * Imports maps on a worker thread, then reopens song select on the last imported map.
+     * AI-generated 2026-11-14; see docs/AI_USAGE.md.
+     */
+    private void importMaps(List<Path> files, Consumer<String> status) {
+        Node screen = root.getCenter();
+        status.accept("Importing " +(files.size() == 1 ? files.getFirst().getFileName() : files.size() + " maps") + "...");
+        Thread worker = new Thread(() -> {
+            Path last = null;
+            List<String> errors = new ArrayList<>();
+            int ok = 0;
+            for (Path file : files) {
+                try {
+                    last = importer.importMap(file);
+                    ok++;
+                } catch (MapImporter.ImportException e) {
+                    errors.add(e.getMessage());
+                } catch (IOException | RuntimeException e) {
+                    errors.add(file.getFileName() + ": " + e.getMessage());
+                }
+            }
+            String message = (ok > 0 ? "Imported " + ok + (ok == 1 ? " map." : " maps.") : "")
+                    + (errors.isEmpty() ? "" : (ok > 0 ? "\n" : "") + "Import failed: " + String.join("\n", errors));
+            Path focus = last;
+            Platform.runLater(() -> {
+                // Only refresh if the player is still on the same song select screen.
+                if (root.getCenter() == screen) showSongSelection(focus, message);
+            });
+        }, "map-import");
+        worker.setDaemon(true);
+        worker.start();
+    }
+
+    private void chooseMapsToImport(Consumer<String> status) {
+        FileChooser chooser = new FileChooser();
+        chooser.setTitle("Import maps");
+        chooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Maps (*.osz, *.osu, *.tmap, *.zip, manifest.json)", "*.osz", "*.osu", "*.tmap", "*.zip", "manifest.json"),
+                new FileChooser.ExtensionFilter("All files", "*.*"));
+        List<File> picked = chooser.showOpenMultipleDialog(root.getScene().getWindow());
+        if (picked != null && !picked.isEmpty()) importMaps(picked.stream().map(File::toPath).toList(), status);
+    }
+
+    /** Song select; opens {@code focusFolder} if given and shows {@code message} in the detail card. */
+    public void showSongSelection(Path focusFolder, String message){
         // osu!-style carousel: the selected song opens and its difficulties appear underneath.
         // Grouping and local leaderboard AI-assisted 2026-11-09; see docs/AI_USAGE.md.
         ObservableList<Song> all = FXCollections.observableArrayList();
         String loadError = "";
-        Path mapsDir = Path.of("examples");
-        try (Stream<Path> folders = Files.list(mapsDir)) {
-            for (Path folder : folders.filter(f -> Files.exists(f.resolve("manifest.json"))).toList()) {
-                all.add(new Song(folder, BeatmapJson.loadManifest(folder)));
+        // Converted maps in maps/ plus everything imported into ~/.taikofx/maps.
+        for (Path mapsDir : List.of(Path.of("maps"), importer.library())) {
+            if (!Files.isDirectory(mapsDir)) continue;
+            try (Stream<Path> folders = Files.list(mapsDir)) {
+                for (Path folder : folders.filter(f -> !f.getFileName().toString().startsWith(".") && Files.exists(f.resolve("manifest.json"))).sorted().toList()) {
+                    try {
+                        all.add(new Song(folder, BeatmapJson.loadManifest(folder)));
+                    } catch (IOException | RuntimeException e) {
+                        loadError = "Skipped broken map " + folder.getFileName();
+                    }
+                }
+            } catch (IOException e) {
+                loadError = "Could not read maps: " + e.getMessage();
             }
-        } catch (IOException e) {
-            loadError = "Could not read maps: " + e.getMessage();
         }
-        final String errorText = loadError;
+        final String errorText = message != null && !message.isEmpty() ? message : loadError;
         FilteredList<Song> visible = new FilteredList<>(all);
 
         // Top bar: search and map count.
@@ -285,9 +369,13 @@ public final class TaikoApplication extends Application {
         back.setOnAction(event -> showMainMenu());
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
-        Label help = new Label("↑ ↓ difficulty · ← → song · F3 / F4 speed · Enter play · Esc back");
+        Button importButton = new Button("Import");
+        importButton.getStyleClass().add("back-button");
+        importButton.setFocusTraversable(false);
+        importButton.setOnAction(event -> chooseMapsToImport(status::setText));
+        Label help = new Label("↑ ↓ difficulty · ← → song · F3 / F4 speed · Enter play · Esc back · drop maps to import");
         help.getStyleClass().add("help-text");
-        HBox bottomBar = new HBox(16, back, help, spacer, start);
+        HBox bottomBar = new HBox(16, back, importButton, help, spacer, start);
         bottomBar.setAlignment(Pos.CENTER_LEFT);
         bottomBar.getStyleClass().add("bottom-bar");
 
@@ -334,7 +422,11 @@ public final class TaikoApplication extends Application {
         });
 
         showScreen(new ScaledPane(screen));
-        if (visible.isEmpty()) { rebuild.run(); showNothing.run(); } else openSong.accept(visible.getFirst());
+        onFilesDropped = files -> importMaps(files, status::setText);
+        Song focus = all.stream().filter(s -> s.folder().equals(focusFolder)).findFirst().orElse(null);
+        if (visible.isEmpty()) { rebuild.run(); showNothing.run(); }
+        else openSong.accept(focus != null ? focus : visible.getFirst());
+        if (!errorText.isEmpty()) status.setText(errorText);   // keep the import result visible over the preview note
         Platform.runLater(search::requestFocus);
     }
 
@@ -657,6 +749,7 @@ public final class TaikoApplication extends Application {
     private void showScreen(Node screen) {
         preview.stop();   // every screen change ends the song-select preview
         onWindowBlur = null;
+        onFilesDropped = null;
         root.setTop(null);
         root.setBottom(null);
         root.setLeft(null);

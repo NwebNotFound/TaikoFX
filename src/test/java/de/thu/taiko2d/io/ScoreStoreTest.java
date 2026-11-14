@@ -40,6 +40,6 @@ class ScoreStoreTest {
 
     @Test
     void keyUsesFolderNameAndForwardSlashes() {
-        assertEquals("osu-song/charts/hard.json", ScoreStore.key(Path.of("examples", "osu-song"), "charts\\hard.json"));
+        assertEquals("osu-song/charts/hard.json", ScoreStore.key(Path.of("maps", "osu-song"), "charts\\hard.json"));
     }
 }

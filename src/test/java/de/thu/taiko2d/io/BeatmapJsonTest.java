@@ -11,7 +11,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class BeatmapJsonTest {
-    private static final Path MAP = Path.of("examples/heart-crush");
+    private static final Path MAP = Path.of("src/test/resources/maps/heart-crush");
 
     @Test
     void loadsAllNotesFromChart() throws IOException {

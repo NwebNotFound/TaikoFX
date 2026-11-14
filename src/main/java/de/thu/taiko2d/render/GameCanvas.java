@@ -237,7 +237,7 @@ public final class GameCanvas extends Canvas {
 
     private static final Image HIT_BIG_LEFT = PixelArt.fromRows(Map.of(
             'K', PixelArt.INK,
-            'O', Color.web("#f7b733")),
+            'O', PixelArt.RED),   // don press = red like the don note
         "....KKKK........",
         "..KKOOOOKK......",
         ".KOOOOOOOOK.....",
@@ -258,7 +258,7 @@ public final class GameCanvas extends Canvas {
 
     private static final Image HIT_BIG_RIGHT = PixelArt.fromRows(Map.of(
             'K', PixelArt.INK,
-            'O', Color.web("#f7b733")),
+            'O', PixelArt.RED),
         "........KKKK....",
         "......KKOOOOKK..",
         ".....KOOOOOOOOK.",
@@ -279,7 +279,7 @@ public final class GameCanvas extends Canvas {
 
     private static final Image HIT_SMALL_LEFT = PixelArt.fromRows(Map.of(
             'K', PixelArt.INK,
-            'R', PixelArt.RED),
+            'R', PixelArt.BLUE),  // ka press = blue like the ka note
         "................",
         "......KKKK......",
         "....KKRRRRKK....",

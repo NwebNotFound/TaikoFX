@@ -9,9 +9,10 @@ don/ka with the keyboard. The festival gameplay screen has a liquid health/fever
 bar, a drum mascot that bobs, leans, flips on combo milestones and shakes on
 misses, lanterns/crowd/yagura scenery, kiai fireworks, hit-note flight arcs,
 pause, results and a local leaderboard. Song select is card-based with search
-and per-song difficulty lists. Maps are JSON charts under `examples/`; an
-optional developer tool in `src/tools` converts osu! `.osz`/`.osu` into that
-format (converted maps are git-ignored and must not be submitted).
+and per-song difficulty lists. Maps are JSON charts under `maps/` and
+`~/.taikofx/maps/`. Maps can be imported in-game (Import button or drag and drop):
+TaikoFX `.tmap`/`.zip` packages and folders, and osu! `.osz`/`.osu` files, which
+are converted on import. Converted third-party maps must not be committed or submitted.
 
 Own contributions and AI usage are logged in
 [docs/CONTRIBUTIONS.md](docs/CONTRIBUTIONS.md) and
@@ -26,10 +27,11 @@ Own contributions and AI usage are logged in
   `Matrix3x3`, `WaveHealthBar`, `Mascot` transforms, `FestivalScene` pixel art.
 - Song select: osu!-style cards, difficulty list under the selected song, speed
   setting, preview audio, local scores in `~/.taikofx/scores.json`.
-- Charts: bundled `examples/heart-crush` reference map; developer `convertOsu`
-  Gradle task for personal practice maps.
+- Charts: in-game import into `~/.taikofx/maps/` (drag and drop or Import button,
+  incl. osu! `.osz`); `convertOsu` Gradle task writes into `maps/`. The
+  `heart-crush` reference map is now only a test fixture in `src/test/resources/maps/`.
 - Tests: JUnit for matrix, judgement, health, combo, chart info, lead-in,
-  leaderboard, score store, beatmap JSON and the osu converter (70 tests).
+  leaderboard, score store, beatmap JSON and the osu converter (86 tests).
 
 The integrated beatmap editor is still a placeholder / hidden; packaging with a
 bundled runtime is not done yet.
@@ -76,13 +78,13 @@ Pinned stack: Java 25, Gradle 9.1.0, JavaFX 25.0.4, OpenJFX plugin 0.1.0,
 Gson 2.14.0 and JUnit Jupiter 6.0.3. See the early bootstrap notes in
 [docs/TEST_REPORT.md](docs/TEST_REPORT.md).
 
-### Developer osu! converter (optional)
+### Command-line osu! converter (optional)
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\dev.ps1 convertOsu --args="C:\path\to\map.osz"
 ```
 
-Writes into `examples/osu-<artist-title>/`. Those folders are git-ignored;
+Writes into `maps/osu-<artist-title>/`. Dragging the `.osz` onto the game does the same into `~/.taikofx/maps/`. Those folders are git-ignored;
 do not commit, publish or submit converted third-party songs/charts.
 
 ## Linux / macOS (Gradle wrapper)
@@ -115,7 +117,7 @@ Before switching machines, commit and push your work. On the other machine,
   transforms and festival visuals (see CONTRIBUTIONS / AI_USAGE for authorship).
 - `game/`: `JudgementEngine`, `HealthGauge`, `ComboMilestone`, `LeadInClock`, `InputState`.
 - `model/` + `io/`: notes, chart info, manifests, JSON load, local scores.
-- `src/tools/.../osu/`: separate developer converter (not in the game jar).
+- `io/MapImporter.java` + `tools/osu/`: in-game map import and the osu! converter it uses.
 - `src/main/resources/css/app.css`: colours and UI styling.
 - `Launcher.java`: ordinary Java entry point; normally needs no changes.
 

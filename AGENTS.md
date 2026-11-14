@@ -6,7 +6,8 @@ The project name is TaikoFX; `de.thu.taiko2d` remains the Java package from the 
 
 Preserve the student's existing work and implement only the requested stage.
 Keep gameplay/judging, rendering, audio, editor and package I/O separate.
-Do not generate dozens of empty classes. No osu! importing or optional holds yet.
+Do not generate dozens of empty classes. No optional holds yet. In-game osu! import
+exists at the student's explicit request (2026-11-14), overriding the spec.
 Mark generated source and update `docs/AI_USAGE.md` honestly. The separate Moodle
 AI policy still needs review; follow its required format once supplied.
 Do not publish or submit to Moodle without an explicit user request.

@@ -145,3 +145,29 @@ Tool: Claude Code (Anthropic Claude Opus 5.5). AI-generated at the student's req
   multiplied onto the window scale instead of replacing it (the mascot did not scale).
 - The gameplay canvas is now unmanaged in its StackPane; before, its bound size became the
   pane's minimum size and the window could not shrink back after being maximised.
+
+## 14 November 2026 - in-game map import (button + drag and drop)
+
+Tool: Claude Code (Anthropic Claude Opus 5.5). AI-generated at the student's request
+("it needs to be easier to import songs ... from the game or through dragging"):
+- `io/MapImporter` (+ `MapImporterTest`, 11 tests): imports a `.tmap`/`.zip` package, a map
+  folder or its `manifest.json` into `~/.taikofx/maps/<id>`. Allowlisted layout only
+  (manifest, LICENSES.txt, README.md, `audio/*.wav|mp3`, `charts/*.json`, `images/*.png`),
+  sizes counted while reading, traversal/duplicate/case-collision checks, staging folder,
+  manifest/chart/audio checks before the move, no overwriting of an existing map.
+  A zip with one enclosing folder is accepted. MP3 is allowed because converted maps use it.
+- Not the spec's full strict validator yet (no duplicate-key/unknown-field JSON checks,
+  no audio-duration check).
+- osu! import in the game, at the student's explicit request ("i want to drag osu maps in
+  there too"). This overrides the spec/AGENTS.md "no osu! importing" rule. `OsuChart` and
+  `ConvertOsu` moved from the separate `tools` source set into `src/main` (package unchanged),
+  so they are now part of the game jar. `.osz`/`.osu` files, osu! song folders and zips with
+  `.osu` files are converted into a temp folder, then imported through the same checks.
+  `.ogg` songs are refused with an explanation (JavaFX cannot play them). 3 more tests.
+- `examples/` renamed to `maps/`; the `heart-crush` placeholder map was removed from the game
+  and moved to `src/test/resources/maps/heart-crush` as a test fixture.
+- `TaikoApplication`: Import button (file chooser) in song select, drag and drop onto the
+  main menu or song select (ignored during gameplay), import on a worker thread, song select
+  lists `maps/` plus the library and opens the newly imported map.
+- Verification: `dev.ps1 clean test build` passed (86 tests). Drag and drop, the file
+  chooser and playing an imported map were not checked in the running GUI by AI.

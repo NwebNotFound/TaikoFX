@@ -20,10 +20,11 @@ import java.util.zip.ZipFile;
 /**
  * AI-generated (Claude Code, 2026-11-09). See docs/AI_USAGE.md.
  *
- * Developer tool only, not part of the game or its distribution. Converts an
- * osu! .osz (or a folder/.osu file) into a TaikoFX map folder under
- * examples/osu-&lt;name&gt;/ for local testing. Those folders are git-ignored because
- * downloaded maps and songs are third-party material without redistribution rights.
+ * Converts an osu! .osz (or a folder/.osu file) into a TaikoFX map folder. Used by the
+ * in-game importer (MapImporter, since 2026-11-14 at the student's request) and by the
+ * convertOsu Gradle task, which writes into maps/osu-&lt;name&gt;/. Converted maps are
+ * git-ignored because downloaded maps and songs are third-party material without
+ * redistribution rights.
  *
  * Usage: gradlew convertOsu --args="path\to\map.osz [outputParentDir]"
  */
@@ -40,7 +41,7 @@ public final class ConvertOsu {
             System.exit(2);
         }
         Path input = Path.of(args[0]).toAbsolutePath();
-        Path outParent = Path.of(args.length > 1 ? args[1] : "examples");
+        Path outParent = Path.of(args.length > 1 ? args[1] : "maps");
         Path out = convert(input, outParent);
         System.out.println("Wrote " + out.toAbsolutePath());
     }
