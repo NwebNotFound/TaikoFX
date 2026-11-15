@@ -165,7 +165,7 @@ public final class GameCanvas extends Canvas {
         g.setTextAlign(TextAlignment.LEFT);
     }
 
-    // Sprites (32x32 pixel art, student-made in Aseprite). Loading code AI-assisted 2026-11-05.
+    // Sprites (32x32 pixel art, made by the student as pixel grids in code). Scaling code AI-assisted 2026-11-05.
     // Change this to resize every sprite. Keep it a whole number (2, 3, 4) so pixels stay crisp.
     private static final int SPRITE_SCALE = 3;
     private static final int SPRITE_PX = 32;

@@ -10,10 +10,12 @@ import javafx.scene.transform.Affine;
  * Drum mascot that bobs to the beat, swings a stick on every drum hit and does a
  * flip on combo milestones (50x, 100x, ...).
  *
- * The placeholder pixel art, state handling and drawing with a Matrix3x3 as the
- * canvas transform were AI-generated 2026-11-09 (see docs/AI_USAGE.md).
+ * State handling and drawing with a Matrix3x3 as the canvas transform were
+ * AI-generated 2026-11-09 (see docs/AI_USAGE.md). The mascot pixel art is Nils's:
+ * the BODY rows, the drumming frames and stick poses ({@link #build}, {@link #stick}),
+ * the sad frame ({@link #buildSad}) and the falling tears.
  * {@link #idleTransform}, {@link #hitTransform}, {@link #flipTransform},
- * {@link #sadTransform} and {@link #onMiss} were written by Nils using his own
+ * {@link #sadTransform} and {@link #onMiss} were also written by Nils using his own
  * {@link Matrix3x3}.
  *
  * Sprite-local coordinates: the origin is the centre between the mascot's feet,
@@ -177,7 +179,7 @@ final class Mascot {
         g.restore();
     }
 
-    // ---------------------------------------------------------------- placeholder art
+    // ---------------------------------------------------------------- pixel art (student-made)
 
     private static final String[] BODY = {
         ".....KKKKKK.....",

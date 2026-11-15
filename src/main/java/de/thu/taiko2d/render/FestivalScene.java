@@ -13,8 +13,10 @@ import javafx.scene.paint.Color;
  * of paper lanterns that blink on the beat and a crowd that dances along. More
  * people join as the combo grows; during fever everyone jumps and the lanterns flash.
  *
- * AI-generated 2026-11-09 as placeholder art, see docs/AI_USAGE.md. The dancer
- * sprites can be replaced with the student's PNGs (dancer_a_down.png, dancer_a_up.png, ...).
+ * The pixel art is Nils's: the dancer rows and outfits, colours, sky, stars, yagura,
+ * lanterns, fireworks and fountains. The scene logic (crowd placement, walking in/out,
+ * hype growth, beat and kiai timing) was AI-generated 2026-11-09, see docs/AI_USAGE.md.
+ * The dancer sprites can also be replaced with PNGs (dancer_a_down.png, dancer_a_up.png, ...).
  */
 final class FestivalScene {
     private static final int P = 4;   // art pixel size on screen

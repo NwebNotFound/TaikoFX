@@ -16,9 +16,9 @@ Scope: minimal static JavaFX window. No music, scoring, note model, game engine,
 editor or archive importer has been implemented. Source comments identify the
 bootstrap as AI-assisted. Actual verification is recorded in TEST_REPORT.md.
 
-The separate Moodle AI policy remains unread and must be reviewed by the student.
-These markings may need adjustment to the lecturer's required format. This log
-does not establish what AI assistance the assignment permits.
+AI-generated and AI-assisted code is marked in the source comments and in this log, as
+required by the 2D project requirements (WS 2026). Student-written parts are listed in
+CONTRIBUTIONS.md.
 
 ## 20 October 2026 - requested colour palettes
 
@@ -82,13 +82,20 @@ Tool: Claude Code (Anthropic Claude Opus 5.5). Kept short at the student's reque
 - AI-generated: `game/HealthGauge` (health + fever rules chosen by the student),
   `game/ComboMilestone`, `model/ChartInfo` (BPM-based scroll speed),
   `BeatmapJson.loadChartInfo`, `JudgementEngine.finished()/lastNoteMs()`,
-  `render/{PixelArt,FestivalScene}` with placeholder pixel art (lanterns, crowd,
-  yagura, mascot frames), the new gameplay layout in `GameCanvas.draw()`, one
+  `render/{PixelArt,FestivalScene}` code (the pixel art itself is the student's, see the
+  correction below), the new gameplay layout in `GameCanvas.draw()`, one
   press slot per drum half, difficulty choice + speed setting in song select,
   pause menu, results screen, hidden editor button and the new pixel CSS theme.
   The converter now also stores the osu! slider multiplier as `scrollMultiplier`.
-- AI scaffold (bar drawing loop and mascot state/drawing/frames); student filled in the
+- AI scaffold (bar drawing loop and mascot state/drawing); student filled in the
   motion methods listed under "Student-written since" below.
+- Correction (2026-11-15): all pixel art drawn in code is the student's, not AI
+  placeholder art. In `Mascot.java`: the `BODY` rows, the drumming frames and stick poses
+  (`build`, `stick`), the sad frame (`buildSad`) and the falling tears. In
+  `FestivalScene.java`: the dancer rows and outfits, colours, sky, stars, yagura,
+  lanterns, fireworks and fountains; in `PixelArt.java`: the palette. AI-generated
+  remain the `PixelArt` helpers (`fromRows`, `override`) and the scene logic (crowd
+  placement and walking, hype growth, beat/kiai timing).
 - Unchanged earlier student code: `Matrix3x3`, `drawHitFlights`, the 32x32 sprites.
 - Follow-up: fever meter drains when idle and during fever; `hype` grows the crowd, which
   is scattered on a jittered grid over the lower screen and walks in/out from the sides;
@@ -128,8 +135,8 @@ Tool: Claude Code (Anthropic Claude Opus 5.5). AI-generated at the student's req
   broken files moved aside) + tests; cleared plays are saved from the results screen.
 - Kiai made visible again: fireworks every two beats with a rising rocket and two rings,
   plus two fountains on the yagura roof for 3.5 s when a kiai section starts
-  (`ChartInfo.lastKiaiStart`, ignores sub-second kiai flashes). Placeholder effects in the
-  AI-generated `FestivalScene`; the student may replace them.
+  (`ChartInfo.lastKiaiStart`, ignores sub-second kiai flashes). The firework/fountain
+  pixel art is the student's (see the 2026-11-15 correction); the timing code is AI.
 
 ## 10 November 2026 - window-size scaling
 
@@ -171,3 +178,12 @@ Tool: Claude Code (Anthropic Claude Opus 5.5). AI-generated at the student's req
   lists `maps/` plus the library and opens the newly imported map.
 - Verification: `dev.ps1 clean test build` passed (86 tests). Drag and drop, the file
   chooser and playing an imported map were not checked in the running GUI by AI.
+
+## 15 November 2026 - documentation update
+
+Tool: Claude Code (Anthropic Claude Opus 5.5). At the student's request, AI updated the
+outdated documentation: SOURCES.md and CONTRIBUTIONS.md now state that the note/hit-area
+pixel art is made by the student as pixel grids in code (the Aseprite PNGs are unused
+drafts), the sprite comment in `GameCanvas` and the README feature line were updated
+to match, and the 13 October note about the unread Moodle AI policy was replaced. No code
+behaviour changed.

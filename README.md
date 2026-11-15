@@ -23,7 +23,7 @@ Own contributions and AI usage are logged in
 
 - Gameplay: don/ka notes, judgement windows, combo, health + fever, lead-in /
   skip for long intros and breaks, pause and results.
-- Rendering: Canvas lane with student-drawn 32×32 sprites, hit-note flights via
+- Rendering: Canvas lane with student-made 32×32 pixel art (pixel grids in code), hit-note flights via
   `Matrix3x3`, `WaveHealthBar`, `Mascot` transforms, `FestivalScene` pixel art.
 - Song select: osu!-style cards, difficulty list under the selected song, speed
   setting, preview audio, local scores in `~/.taikofx/scores.json`.

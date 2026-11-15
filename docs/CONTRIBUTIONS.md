@@ -40,3 +40,12 @@ AI-assisted, not student-written: the festival gameplay screen scaffold (`Health
 `ComboMilestone`, `ChartInfo`, `PixelArt`, `FestivalScene`, `WaveHealthBar` drawing loop,
 `Mascot` state/drawing/pixel frames), pause/results, song-select difficulty grouping,
 leaderboard, osu! converter tool, kiai effects and judging tweaks — see AI_USAGE.md.
+
+## Update 15 November 2026
+
+Student-made: the note and hit-area pixel art, now defined as pixel grids in code in
+`GameCanvas` (`RED_NOTE`, `BLUE_NOTE`, `HIT_AREA`). This replaces the Aseprite PNG sprites
+listed on 4 November; those PNGs stay in the resources as drafts but are no longer used.
+
+AI-assisted, not student-written: the in-game map import (Import button, drag and drop,
+osu! conversion on import), see AI_USAGE.md (14 November 2026).

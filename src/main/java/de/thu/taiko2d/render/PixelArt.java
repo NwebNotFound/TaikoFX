@@ -8,10 +8,11 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 
 /**
- * AI-generated 2026-11-09; see docs/AI_USAGE.md.
+ * Helper code ({@link #fromRows}, {@link #override}) AI-generated 2026-11-09; see
+ * docs/AI_USAGE.md. The festival palette below is Nils's.
  *
- * Builds placeholder pixel-art sprites from text rows, one character per pixel.
- * Every placeholder can be replaced by the student's own Aseprite PNG: if
+ * Builds pixel-art sprites from text rows, one character per pixel.
+ * Any of them can be replaced by an Aseprite PNG: if
  * {@code sprites/<name>.png} exists in the resources, that file wins.
  */
 final class PixelArt {
